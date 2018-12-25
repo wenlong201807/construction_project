@@ -6,6 +6,7 @@
     <Button to="/layout">to_layout_页面布局</Button>
     <Button to="/">跳转到登录页面</Button>
     <Button to="/yuxuan">to_雨萱姐_的页面</Button>
+     <Button to="/echart_test">/echart_test</Button>
     <Button to="/test">to_测试_的页面</Button>
     登录的名字:{{name}}******
     登录的密码:{{password}}
