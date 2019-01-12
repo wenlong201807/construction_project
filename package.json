@@ -24,6 +24,7 @@
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue-upload-component": "^2.8.14",
+    "wangeditor": "^3.1.1",
     "xlsx": "^0.14.0"
   },
   "devDependencies": {

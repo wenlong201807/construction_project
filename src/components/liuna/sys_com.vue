@@ -6,7 +6,7 @@
     <Button to="/layout">to_layout_页面布局</Button>
     <Button to="/">跳转到登录页面</Button>
     <Button to="/yuxuan">to_雨萱姐_的页面</Button>
-     <Button to="/echart_test">/echart_test</Button>
+    <Button to="/echart_test">/echart_test</Button>
     <Button to="/test">to_测试_的页面</Button>
     登录的名字:{{name}}******
     登录的密码:{{password}}
@@ -103,49 +103,56 @@ export default {
             //   }
             // })
             return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    // this.show(params.index)
-                    this.$Notice.success({
-                      title: '我是来说明页面操作的',
-                      desc: 'The desc will hide when you set render.',
-                      top: 80,
-                      duration: 2,
-                      render: h => {
-                        return h('span', [
-                          'This is created by ',
-                          h('a', 'render'),
-                          ' function'
-                        ])
-                      }
-                    })
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      // this.show(params.index)
+                      this.$Notice.success({
+                        title: '我是来说明页面操作的',
+                        desc: 'The desc will hide when you set render.',
+                        top: 80,
+                        duration: 2,
+                        render: h => {
+                          return h('span', [
+                            'This is created by ',
+                            h('a', 'render'),
+                            ' function'
+                          ])
+                        }
+                      })
+                    }
                   }
-                }
-              }, '查看'),
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
                 },
-                on: {
-                  click: () => {
-                    // 打开组件选择模态框
-                    this.modal_input = true
-                    // this.remove(params.index)
-                    // 调用组件
-                    this.checkMainId()
+                '查看'
+              ),
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  on: {
+                    click: () => {
+                      // 打开组件选择模态框
+                      this.modal_input = true
+                      // this.remove(params.index)
+                      // 调用组件
+                      this.checkMainId()
+                    }
                   }
-                }
-              }, '组件选择')
-
+                },
+                '组件选择'
+              )
             ])
           }
         }
@@ -162,13 +169,11 @@ export default {
         //   movie: 'The Prestige',
         //   music: 'I Cry'
         // },
-
       ],
 
       // 穿梭框中的原始数据与选中数据
       transform_origin_data: [],
       transform_checked_data: []
-
     }
   },
   created () {
@@ -176,16 +181,30 @@ export default {
   },
   methods: {
     // 初始化表格数据***根据用户名和用户角色查询用户所拥有的系统
-    async  initTable () {
-      let paramsInitTable = {username: this.name, userType: this.password}
-      const {data} = await axios.get('http://localhost:3000/findSystemByuserName', {params: paramsInitTable})
+    async initTable () {
+      let paramsInitTable = {
+        username: this.name,
+        userType: this.password,
+        cc: { aa: 'aa' }
+      }
+      // JSON.stringify(paramsInitTable)
+      const { data } = await axios.get(
+        'http://localhost:3000/findSystemByuserName',
+        { params: paramsInitTable }
+      )
+      // const { data } = await axios.get(
+      //   'http://localhost:3000/findSystemByuserName',
+      //   { params: JSON.stringify(paramsInitTable) }
+      // )
       console.log(data)
       this.sys_com_data = data
     },
 
     // 让用户给系统选择服务主键
     async checkMainId () {
-      const {data} = await axios.get('http://localhost:3000/findServiceComponentList')
+      const { data } = await axios.get(
+        'http://localhost:3000/findServiceComponentList'
+      )
       console.log(data)
       // 由于穿梭狂特性，需要固定的key为键，字符串数字为name
       data.map((item, index) => {
@@ -213,7 +232,17 @@ export default {
     },
     render_box (item) {
       // console.log(item)
-      return item.key + ' - ' + item.id + ' - ' + item.name + ' - ' + item.securityNode + ' - ' + item.servicePlatformId
+      return (
+        item.key +
+        ' - ' +
+        item.id +
+        ' - ' +
+        item.name +
+        ' - ' +
+        item.securityNode +
+        ' - ' +
+        item.servicePlatformId
+      )
     },
     reloadMockData () {
       this.checkMainId()
@@ -226,7 +255,10 @@ export default {
     // 表格中input中的弹出层部分
     ok_modal_input () {
       this.$Message.info('Clicked ok_input')
-      console.log('我是确定按钮之后获取选中的内容', this.transform_checked_data)
+      console.log(
+        '我是确定按钮之后获取选中的内容',
+        this.transform_checked_data
+      )
     },
     cancel_modal_input () {
       this.$Message.info('Clicked cancel_input')
@@ -244,14 +276,14 @@ export default {
 </script>
 
 <style>
-.sys_com_table{
+.sys_com_table {
   width: 900px;
   margin: 10px auto;
 }
 
 /* // 弹出层样式 */
-.compontent_modal .ivu-modal{
+.compontent_modal .ivu-modal {
   width: 1000px !important;
-  top:50px;
+  top: 50px;
 }
 </style>

@@ -9,19 +9,25 @@
     <Button to="/test">to_测试_的页面</Button>
     <Button to="/echart_long">/echart_long</Button>
     <Button to="/echart_cal">/echart_cal</Button>
-    <h2>跳转链接</h2>
-    <div
-      id="echartContainer"
-      class="my_chart"
-    ></div>
+    <Button to="/echart_cal">更换日期</Button>
+    <h2>
+      查询日期:
+      <Select v-model="query_data" style="width:200px">
+        <!-- <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option> -->
+        <Option value="2017-01">2018年01月</Option>
+        <Option value="2017-02">2018年02月</Option>
+        <Option value="2017-03">2018年03月</Option>
+      </Select>
+      <Button @click="query_self_data">查询月份</Button>
+      选择时间:
+      <TimePicker @on-change="handleChange" :value="value_query_hhmm" :steps="[1, 10]" format="HH:mm" placeholder="Select time"></TimePicker>
+      <Button @click="query_hhmm">获取时分</Button>
+    </h2>
+    <div id="echartContainer" class="my_chart"></div>
     <div class="card_mock">
     </div>
     <!-- 模态框 -->
-    <Modal
-      v-model="modal_detail"
-      title="日历弹出模态框"
-      draggable
-    >
+    <Modal v-model="modal_detail" title="日历弹出模态框" draggable>
       <p>我是自定义时间****{{self_data}} ******<Button type="primary">修改</Button> ****<Button type="error">删除</Button> </p>
 
     </Modal>
@@ -29,23 +35,48 @@
 </template>
 
 <script>
-import echarts from 'echarts';
+import echarts from 'echarts'
 export default {
   name: 'cal',
   data () {
     return {
+      query_data: '',
+      value_query_hhmm: '',
       modal_detail: false,
-      self_data: ''
+      self_data: '',
+      dataList: [{
+        date: '2019-05-08',
+        remark: ''
+      }, {
+        date: '2019-43-4',
+        remark: '打他去'
+      }]
+    }
+  },
+  watch: {
+    dataList: function () {
+      // initEcharts([]);
     }
   },
   mounted () {
     this.init_cal()
   },
   methods: {
-    init_cal (_this) {
+    handleChange (time) {
+      this.value_query_hhmm = time
+    },
+    query_hhmm () {
+      console.log(this.value_query_hhmm)
+    },
+    query_self_data () {
+      console.log(this.query_data)
+      this.init_cal(this, this.query_data)
+    },
+    init_cal (_this, paramsData = '2017-04') {
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('echartContainer'))
       _this = this
+      console.log(paramsData)
 
       // 点击事件
       myChart.on('click', function (params) {
@@ -56,6 +87,7 @@ export default {
         console.log(params)
         console.log(params.name)
         console.log(params.value)
+        console.log(params.value[2])
 
         // let newObject = { name: params.name, value: params.value }
         // _this.target_list.push(newObject)
@@ -160,8 +192,8 @@ export default {
         ['2017-4-6', '初十'],
         ['2017-4-7', '十一'],
         ['2017-4-8', '十二'],
-        ['2017-4-9', '十三'],
-        ['2017-4-10', '十四'],
+        ['2017-4-9', '十三', '❌'],
+        ['2017-4-10', '十四', '查看😀', '添加😝'],
         ['2017-4-11', '十五'],
         ['2017-4-12', '十六'],
         ['2017-4-13', '十七'],
@@ -482,7 +514,8 @@ export default {
             monthLabel: {
               show: false
             },
-            range: '2017-04'
+            // range: '2017-04' // paramsData
+            range: paramsData // paramsData
           }
         ],
         series: [
@@ -495,7 +528,7 @@ export default {
                 show: true,
                 formatter: function (params) {
                   var d = echarts.number.parseDate(params.value[0])
-                  return d.getDate() + '\n\n' + params.value[2] + '\n\n';
+                  return d.getDate() + '\n\n' + params.value[2] + '\n\n'
                 },
                 textStyle: {
                   color: '#000'

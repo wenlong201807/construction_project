@@ -9,26 +9,12 @@
     <Button to="/test">to_测试_的页面</Button>
     <Button to="/echart_long">/echart_long</Button>
     <hr>
-    <div
-      id="echartContainer"
-      class="my_chart"
-    ></div>
-    <div
-      class="card_mock"
-      v-for="(item,index) in target_list"
-      :key="index"
-    >
+    <div id="echartContainer" class="my_chart"></div>
+    <div class="card_mock" v-for="(item,index) in target_list" :key="index">
       <p>name:{{item.name}}</p>
       <p>value:{{item.value}}</p>
-      <Button
-        type="primary"
-        @click="add_data"
-      >添加数据</Button>
-      <p
-        v-if="isShow"
-        v-for="(item,index) in new_add_data"
-        :key="index"
-      >{{item.aa}}</p>
+      <Button type="primary" @click="add_data">添加数据</Button>
+      <p v-if="isShow" v-for="(item,index) in new_add_data" :key="index">{{item.aa}}</p>
     </div>
     <div class="card_mock add_data">
 
